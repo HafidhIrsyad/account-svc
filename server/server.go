@@ -14,6 +14,7 @@ func Start() {
 	}
 
 	e := echo.New()
+	Set(e)
 
 	startServerWithGracefulShutdown(e)
 }

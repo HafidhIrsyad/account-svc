@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/hafidhirsyad/account-svc/logger"
+	"github.com/rs/zerolog"
 	"gorm.io/gorm"
 )
 
@@ -21,6 +23,7 @@ func (c *AccountRepository) Withdraw(ctx context.Context, trx *gorm.DB, req With
 
 	sql := trx.Table(TableWallets).Where("acoount_id = ?", req.AccountId).Updates(&updateNominal)
 	if sql.Error != nil {
+		logger.Log(ctx, zerolog.ErrorLevel, "Error when withdraw", map[string]any{"error": sql.Error, "func": "Withdraw", "path": "repository.accounts.withdraw", "payload": req})
 		return sql.Error
 	}
 
