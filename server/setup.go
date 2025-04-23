@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/hafidhirsyad/account-svc/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -13,6 +14,8 @@ import (
 )
 
 func Set(e *echo.Echo) {
+	e.Use(middleware.Recover())
+	e.Use(logger.LogMiddleware)
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"*"},
 		AllowHeaders:     []string{"*"},

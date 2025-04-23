@@ -29,13 +29,13 @@ var (
 )
 
 func SecretConfig() {
+	AppPort = viper.GetInt("APP_PORT")
 	DriverName = viper.GetString("DRIVER_NAME")
 	PosgresDBHost = viper.GetString("POSTGRES_HOST")
 	PosgresDBUser = viper.GetString("POSTGRES_USER")
 	PosgresDBPassword = viper.GetString("POSTGRES_PASSWORD")
 	PosgresDBName = viper.GetString("POSTGRES_DB_NAME")
 	PosgresDBPort = viper.GetString("POSTGRES_PORT")
-	AppPort = viper.GetInt("APP_PORT")
 	DbMaxOpenConnection = viper.GetInt("POSTGRES_DB_MAX_OPEN_CONNECTION")
 	DbMaxIdleConnection = viper.GetInt("POSTGRES_DB_MAX_IDLE_CONNECTION")
 }
