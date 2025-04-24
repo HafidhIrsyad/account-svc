@@ -2,7 +2,7 @@
 
 # Variables
 APP_NAME=account-service
-MAIN=./main.go
+MAIN=main.go
 
 # Default target
 .PHONY: help

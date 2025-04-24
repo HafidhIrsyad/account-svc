@@ -1,28 +1,43 @@
 version: "3.8"
 
 services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    env_file:
+      - .env # defines POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB_NAME, POSTGRES_PORT
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432" # Expose Postgres to host
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   app:
     build: .
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "${APP_PORT}:${APP_PORT}"
     env_file:
-      - .env
-    depends_on:
-      - db
-
-  db:
-    image: postgres:14
-    restart: always
-    env_file:
-      - .env
+      - .env # for APP_PORT, DRIVER_NAME, POSTGRES_* vars
     environment:
+      # Override host for docker networking
+      POSTGRES_HOST: db
+      # Map other DB settings into the container
+      POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWPOSTGRES_PASSWORDORD}
-      POSTGRES_DB: ${POSTGRES_DB_NAME}
-    ports:
-      - "${POSTGRES_PORT}:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
 
 volumes:
-  pgdata:
+  pgdata: {}
