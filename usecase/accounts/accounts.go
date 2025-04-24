@@ -13,6 +13,8 @@ import (
 type AccountServiceI interface {
 	Register(ctx context.Context, req entity.RegisterReq) (norek int64, err error)
 	Deposit(ctx context.Context, req entity.DepositReq) (saldo int64, err error)
+	Withdraw(ctx context.Context, req entity.WithdrawReq) (saldo int64, err error)
+	GetBalanceByNoRekening(ctx context.Context, norek int64) (saldo int64, err error)
 }
 
 type AccountService struct {

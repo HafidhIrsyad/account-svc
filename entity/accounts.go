@@ -12,6 +12,19 @@ type (
 		NoRekening string `json:"no_rekening"`
 		Nominal    int64  `json:"nominal"`
 	}
+	WithdrawReq struct {
+		NoRekening string `json:"no_rekening"`
+		Nominal    int64  `json:"nominal"`
+	}
+	Balance struct {
+		WalletId   int64  `json:"wallet_id"`
+		AccountId  int64  `json:"account_id"`
+		NIK        int64  `json:"nik"`
+		NoHP       int64  `json:"no_hp"`
+		NoRekening int64  `json:"no_rekening"`
+		Name       string `json:"name"`
+		Nominal    int64  `json:"nominal"`
+	}
 )
 
 func (r *RegisterReq) ValidateRegister() (err error) {
@@ -39,8 +52,20 @@ func (d *DepositReq) ValidateDeposit() (err error) {
 		return errors.New("Nomor Rekening Wajib diisi")
 	}
 
-	if d.Nominal == 0 {
-		return errors.New("Nominal Saldo Wajib diisi")
+	if d.Nominal <= 0 {
+		return errors.New("Nomila tidak boleh 0 atau minus")
+	}
+
+	return nil
+}
+
+func (w *WithdrawReq) ValidateWithdraw() (err error) {
+	if w.NoRekening == "" {
+		return errors.New("Nomor Rekening Wajib diisi")
+	}
+
+	if w.Nominal <= 0 {
+		return errors.New("Nomila tidak boleh 0 atau minus")
 	}
 
 	return nil
