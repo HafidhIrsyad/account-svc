@@ -8,8 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// Deposit implements AccountRepositoryI.
-func (c *AccountRepository) Deposit(ctx context.Context, trx *gorm.DB, payload Deposit) (id int64, err error) {
+func (c *AccountRepository) InsertBalance(ctx context.Context, trx *gorm.DB, payload Deposit) (id int64, err error) {
 	if trx == nil {
 		trx = c.conn.WithContext(ctx)
 	}
