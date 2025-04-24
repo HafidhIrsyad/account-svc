@@ -8,6 +8,10 @@ type (
 		NIK  string `json:"nik"`
 		NoHP string `json:"no_hp"`
 	}
+	DepositReq struct {
+		NoRekening string `json:"no_rekening"`
+		Nominal    int64  `json:"nominal"`
+	}
 )
 
 func (r *RegisterReq) ValidateRegister() (err error) {
@@ -25,6 +29,18 @@ func (r *RegisterReq) ValidateRegister() (err error) {
 
 	if r.NoHP == "" {
 		return errors.New("No HP Wajib diisi")
+	}
+
+	return nil
+}
+
+func (d *DepositReq) ValidateDeposit() (err error) {
+	if d.NoRekening == "" {
+		return errors.New("Nomor Rekening Wajib diisi")
+	}
+
+	if d.Nominal == 0 {
+		return errors.New("Nominal Saldo Wajib diisi")
 	}
 
 	return nil

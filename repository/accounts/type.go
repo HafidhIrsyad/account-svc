@@ -18,6 +18,7 @@ type (
 		NoHP       int64  `gorm:"column:no_hp"`
 		NoRekening int64  `gorm:"column:no_rekening"`
 		Name       string `gorm:"column:name"`
+		Nominal    int64  `gorm:"column:nominal"`
 	}
 
 	Deposit struct {
@@ -25,10 +26,6 @@ type (
 		AccountId int64 `gorm:"column:account_id"`
 	}
 
-	Withdraw struct {
-		Nominal   int64 `gorm:"column:nominal"`
-		AccountId int64 `gorm:"column:account_id"`
-	}
 	Filter struct {
 		NoHP       int64 `gorm:"column:no_hp"`
 		NoRekening int64 `gorm:"column:no_rekening"`

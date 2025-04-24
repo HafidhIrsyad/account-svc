@@ -6,5 +6,8 @@ import (
 )
 
 func AccountsPath(e *echo.Echo, ah handler.AccountHandler) {
-	e.POST("/account/register", ah.Register)
+	e.POST("/account/daftar", ah.Register)
+	e.POST("/account/tabung", ah.Deposit)
+	e.POST("/account/tarik", ah.Deposit)
+	e.GET("/account/saldo/:no_rekening", ah.Deposit)
 }

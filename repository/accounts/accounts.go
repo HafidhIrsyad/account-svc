@@ -8,8 +8,8 @@ import (
 
 type AccountRepositoryI interface {
 	Register(ctx context.Context, trx *gorm.DB, payload Register) (id int64, err error)
-	Deposit(ctx context.Context, trx *gorm.DB, payload Deposit) (id int64, err error)
-	Withdraw(ctx context.Context, trx *gorm.DB, req Withdraw) (err error)
+	InsertBalance(ctx context.Context, trx *gorm.DB, payload Deposit) (id int64, err error)
+	UpdateBalance(ctx context.Context, trx *gorm.DB, accId int64, updateNominal map[string]any) (err error)
 	GetBalanceByFilter(ctx context.Context, filter Filter) (resp Balance, err error)
 }
 

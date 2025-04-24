@@ -45,3 +45,31 @@ func (h *AccountHandler) Register(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]int64{"no_rekening": noRek})
 }
+
+func (h *AccountHandler) Deposit(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	logger.Log(ctx, zerolog.InfoLevel, "deposit api called", map[string]any{"func": "Deposit", "path": "api.handler.accounts"})
+
+	var req entity.DepositReq
+	if err := c.Bind(&req); err != nil {
+		logger.Log(ctx, zerolog.ErrorLevel, "invalid request", map[string]any{"func": "Deposit", "path": "api.handler.accounts"})
+		return c.JSON(http.StatusBadRequest, map[string]string{"remark": "invalid request"})
+	}
+
+	err := req.ValidateDeposit()
+	if err != nil {
+		logger.Log(ctx, zerolog.ErrorLevel, "error validate request", map[string]any{"error": err.Error(), "func": "Deposit", "path": "api.handler.accounts"})
+		return c.JSON(http.StatusBadRequest, map[string]string{"remark": err.Error()})
+	}
+
+	saldo, err := h.accService.Deposit(ctx, req)
+	if err != nil {
+		logger.Log(ctx, zerolog.ErrorLevel, "error Deposit", map[string]any{"error": err.Error(), "func": "Deposit", "path": "api.handler.accounts", "request": req})
+		return c.JSON(http.StatusBadRequest, map[string]string{"remark": err.Error()})
+	}
+
+	logger.Log(ctx, zerolog.InfoLevel, "deposit api called success", map[string]any{"func": "Deposit", "path": "api.handler.accounts"})
+
+	return c.JSON(http.StatusOK, map[string]int64{"saldo": saldo})
+}

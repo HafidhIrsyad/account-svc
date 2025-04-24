@@ -3,7 +3,6 @@ package accounts
 import (
 	"context"
 	"errors"
-	"strconv"
 	"time"
 
 	"github.com/hafidhirsyad/account-svc/entity"
@@ -20,8 +19,8 @@ func (a *AccountService) Register(ctx context.Context, req entity.RegisterReq) (
 	defer TimeTrack(time.Now(), "AccountService.Register")
 
 	noRekening := a.generateNoRekening()
-	noHpInt, _ := strconv.Atoi(req.NoHP)
-	nikInt, _ := strconv.Atoi(req.NIK)
+	noHpInt := ParseStrToInt64(req.NoHP)
+	nikInt := ParseStrToInt64(req.NIK)
 
 	resp, err := a.accRepo.GetBalanceByFilter(ctx, repo.Filter{
 		NIK:  int64(nikInt),
