@@ -1,11 +1,9 @@
-version: "3.8"
-
 services:
   db:
     image: postgres:15-alpine
     restart: always
     env_file:
-      - .env # defines POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB_NAME, POSTGRES_PORT
+      - .env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -29,12 +27,10 @@ services:
     ports:
       - "${APP_PORT}:${APP_PORT}"
     env_file:
-      - .env # for APP_PORT, DRIVER_NAME, POSTGRES_* vars
+      - .env
     environment:
-      # Override host for docker networking
-      POSTGRES_HOST: db
-      # Map other DB settings into the container
-      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: db # 🔥 explicitly overrides .env
+      POSTGRES_PORT: 5432
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
