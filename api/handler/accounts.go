@@ -117,7 +117,7 @@ func (h *AccountHandler) GetBalanceByNoRekening(c echo.Context) error {
 
 	saldo, err := h.accService.GetBalanceByNoRekening(ctx, norekInt)
 	if err != nil {
-		logger.Log(ctx, zerolog.ErrorLevel, "error Withdraw", map[string]any{"error": err.Error(), "func": "GetBalanceByNoRekening", "path": "api.handler.accounts", "request": norekInt})
+		logger.Log(ctx, zerolog.ErrorLevel, "error get balance", map[string]any{"error": err.Error(), "func": "GetBalanceByNoRekening", "path": "api.handler.accounts", "request": norekInt})
 		return c.JSON(http.StatusBadRequest, map[string]string{"remark": err.Error()})
 	}
 
